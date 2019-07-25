@@ -1,7 +1,6 @@
 ﻿using Microsoft.Owin;
 using Microsoft.Owin.Cors;
-using Microsoft.Owin.Security.OAuth;
-using Oauth.Filter;
+using Microsoft.Owin.Security.OAuth; 
 using OAuth.Filter;
 using Owin;
 using System;
@@ -16,7 +15,7 @@ namespace OAuth
         {
             var config = new HttpConfiguration();
             WebApiConfig.Register(config);
-            app.UseCors(CorsOptions.AllowAll);//信任所有站点
+            app.UseCors(CorsOptions.AllowAll);//信任所有站点（跨域）
             ConfigureOAuth(app);
             app.UseWebApi(config);  //这一行代码必须放在ConfiureOAuth(app)之后
 
@@ -29,7 +28,7 @@ namespace OAuth
             {
                 AllowInsecureHttp = true,
                 TokenEndpointPath = new PathString("/token"), //获取 access_token 授权服务请求地址
-                AccessTokenExpireTimeSpan = TimeSpan.FromMinutes(1), //access_token 过期时间 
+                AccessTokenExpireTimeSpan = TimeSpan.FromMinutes(AuthorizationServerProvider.AccessTokenExpireTimeSpan), //access_token 过期时间 
                 Provider = new AuthorizationServerProvider(),//access_token 相关授权服务 
                 RefreshTokenProvider = new RefreshTokenProvider()//refresh_token 授权服务，
             };

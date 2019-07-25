@@ -25,7 +25,7 @@ namespace OAuth.Filter
             {
                 var refreshTokenId = Guid.NewGuid().ToString("n");
                 context.Ticket.Properties.IssuedUtc = DateTime.UtcNow;
-                context.Ticket.Properties.ExpiresUtc = DateTime.UtcNow.AddMinutes(1 + 1);//RefreshToken 过期时间
+                context.Ticket.Properties.ExpiresUtc = DateTime.UtcNow.AddMinutes(AuthorizationServerProvider.AccessTokenExpireTimeSpan * 2);//RefreshToken 过期时间
                 context.SetToken(refreshTokenId);
 
                 //添加到内存中

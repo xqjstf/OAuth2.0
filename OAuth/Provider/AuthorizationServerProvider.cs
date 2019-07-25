@@ -3,13 +3,27 @@ using System.Threading.Tasks;
 using Microsoft.Owin.Security;
 using System.Security.Claims;
 using System.Collections.Generic;
-namespace Oauth.Filter
+using System;
+
+namespace OAuth.Filter
 {
     /// <summary>
     /// Token验证
     /// </summary> 
     public class AuthorizationServerProvider : OAuthAuthorizationServerProvider
     {
+
+        /// <summary>
+        /// token过期时间(分钟)
+        /// </summary>
+        public static int AccessTokenExpireTimeSpan
+        {
+            get
+            {
+                return  Convert.ToInt32(System.Configuration.ConfigurationManager.AppSettings["AccessTokenExpireTimeSpan"]) ;
+            }
+        }
+
         public override Task ValidateClientAuthentication(OAuthValidateClientAuthenticationContext context)
         {
             context.Validated();
