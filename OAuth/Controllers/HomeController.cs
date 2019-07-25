@@ -18,7 +18,7 @@ namespace OAuth.Controllers
         [HttpGet]
         public string getList()
         {
-            ClaimsIdentity oAuthIdentity = new ClaimsIdentity(HttpContext.Current.User.Identity);
+            ClaimsIdentity oAuthIdentity = new ClaimsIdentity(HttpContext.Current.User.Identity); 
             Claim claim = oAuthIdentity.FindFirst(ClaimTypes.UserData); 
             return "UserData：" + claim.Value;
         }

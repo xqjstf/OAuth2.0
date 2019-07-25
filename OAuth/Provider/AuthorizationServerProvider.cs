@@ -20,7 +20,7 @@ namespace OAuth.Filter
         {
             get
             {
-                return  Convert.ToInt32(System.Configuration.ConfigurationManager.AppSettings["AccessTokenExpireTimeSpan"]) ;
+                return Convert.ToInt32(System.Configuration.ConfigurationManager.AppSettings["AccessTokenExpireTimeSpan"]);
             }
         }
 
@@ -47,13 +47,28 @@ namespace OAuth.Filter
                 {
                     var identity = new ClaimsIdentity(context.Options.AuthenticationType);
                     identity.AddClaim(new Claim(ClaimTypes.Name, context.UserName));
-                    identity.AddClaim(new Claim(ClaimTypes.UserData, context.Password)); 
+                    identity.AddClaim(new Claim(ClaimTypes.UserData, context.Password));
                     context.Validated(new AuthenticationTicket(identity, new AuthenticationProperties()));
                 }
                 else
-                { 
+                {
                     context.SetError("用户名或者密码错误");
                 }
+            });
+        }
+
+        /// <summary>
+        /// 刷新是调用
+        /// </summary>
+        /// <param name="context"></param>
+        /// <returns></returns>
+        public override Task GrantRefreshToken(OAuthGrantRefreshTokenContext context)
+        { 
+            return Task.Factory.StartNew(() =>
+            {
+                context.Ticket.Identity.TryRemoveClaim(context.Ticket.Identity.FindFirst(ClaimTypes.UserData));
+                context.Ticket.Identity.AddClaim(new Claim(ClaimTypes.UserData, "New UserData"));
+                base.OnGrantRefreshToken(context);
             });
         }
     }
