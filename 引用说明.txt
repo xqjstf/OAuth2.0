@@ -1,0 +1,15 @@
+1，在Webapi项目下添加如下引用：
+
+Microsoft.AspNet.WebApi.Owin
+
+Owin
+
+Microsoft.Owin.Host.SystemWeb
+
+Microsoft.Owin.Security.OAuth
+
+Microsoft.Owin.Security.Cookies
+
+Microsoft.AspNet.Identity.Owin
+
+Microsoft.Owin.Cors

@@ -1,0 +1,112 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>登录页面</title>
+    <script src="Scripts/jquery-1.10.2.min.js"></script>
+</head>
+<body>
+    <p>
+        用户名：<input type="text" name="userId" value="admin" />
+    </p>
+    <p>
+        密&nbsp;码：<input type="text" name="password" value="000000" />
+    </p>
+    <p>
+        <img src="http://192.168.0.88/CqepcYX/WebAPI/File/GetLoginVCode?guid=0c8034c7-242f-42de-a342-e4cccfe9037c" />
+        <input type="text" name="VCode" />
+    </p>
+    <p>
+        <input type="button" value="Login" id="btnLogin" />
+        <input type="button" value="刷新ToKen" id="btnRefresh" />
+    </p>
+</body>
+</html>
+<script src="Scripts/jsencrypt.min.js"></script>
+<script type="text/javascript">
+
+    function Encrypt(str) {
+        var encrypt = new JSEncrypt();
+        encrypt.setPublicKey("MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCK4n2xrbtnRyBqMJ2iiDeDRdJ/F8EVmzcjSGy/vVNfEVahl6sQOjQXZTc8AEbiZdyLnP9QwX3ZkIsEGUz1VMaPUJeH        LHQC5uVljRWR0ORt4oiU7mtN5ZsEl8gPQBzSbC7IpnXVRN1Mx7s/RlFsWZgkuZKbPjxcfgoA9zXyhmcHywIDAQAB");
+        return encodeURI(encrypt.encrypt(str)).replace(/\+/g, '%2B');
+
+    }
+
+
+    var api_address = "http://192.168.0.88/CqepcYX/WebAPI/token";
+    api_address = "http://localhost/Oauth/token?userType=T";
+    $(function () {
+        $("#btnLogin").bind("click", function () {
+            $.ajax({
+                type: "POST",
+                url: api_address + "?LoginVCode=" + $("input[name='VCode']").val(),
+                data: {
+                    grant_type: "password",
+                    username: $("input[name='userId']").val(),
+                   // password: Encrypt($("input[name='password']").val()),
+                    password: $("input[name='password']").val(),
+                    scope: "0c8034c7-242f-42de-a342-e4cccfe9037c",
+                    ran: Math.random()
+                },
+                dataType: "json",
+                success: function (result) {
+                    if (result.access_token && result.access_token.length > 0) {
+                        sessionStorage.setItem("access_token", result.access_token);
+                        sessionStorage.setItem("refresh_token", result.refresh_token);
+                        if (confirm(JSON.stringify(result))) {
+                            window.location.href = "Test.html";
+                        }
+                    }
+                    else {
+                        alert("未知错误");
+                    }
+                },
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    console.log(XMLHttpRequest);
+                    console.log("textStatus:" + textStatus);
+                    console.log("errorThrown:" + errorThrown);
+
+                    if (XMLHttpRequest.status == 400) {
+                        alert(XMLHttpRequest.responseJSON.error);
+                    }
+                    else {
+                        alert("系统繁忙");
+                    }
+                }
+            });
+        });
+
+        $("#btnRefresh").bind("click", function () {
+            $.ajax({
+                type: "POST",
+                url: api_address,
+                data: { grant_type: "refresh_token", refresh_token: sessionStorage.getItem("refresh_token") },
+                dataType: "json",
+                success: function (result) {
+                    if (result.access_token && result.access_token.length > 0) {
+                        sessionStorage.setItem("access_token", result.access_token);
+                        sessionStorage.setItem("refresh_token", result.refresh_token);
+                        if (confirm(JSON.stringify(result))) {
+                            window.location.href = "Test.html";
+                        }
+                    }
+                    else {
+                        alert("未知错误");
+                    }
+                },
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    console.log(XMLHttpRequest);
+                    console.log("textStatus:" + textStatus);
+                    console.log("errorThrown:" + errorThrown);
+
+                    if (XMLHttpRequest.status == 400) {
+                        alert(XMLHttpRequest.responseJSON.error);
+                    }
+                    else {
+                        alert("系统繁忙");
+                    }
+                }
+            });
+        });
+    });
+</script>
