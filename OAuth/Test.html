@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>测试页面</title> 
+    <title>测试页面</title>
     <script src="Scripts/jquery-3.3.1.min.js"></script>
 </head>
 <body>
@@ -17,13 +17,11 @@
             url: api_address + "api/Home/getList",
             dataType: "json",
             headers: {
-                "Authorization": "Bearer " + sessionStorage.getItem("access_token"), //把登录获取的Token加入到http请求头中 
+                "Authorization": "Bearer " + sessionStorage.getItem("access_token"), //把登录获取的Token加入到http请求头中
             },
-            //beforeSend: function (XMLHttpRequest) {
-            //    XMLHttpRequest.setRequestHeader("Bearer ", sessionStorage.getItem("access_token"));
-            //}, 
-            success: function (result) {
+            success: function (result, status, xhr) {
                 alert(result);
+                console.log(xhr.getResponseHeader('UserType'));
             },
             error: function (XMLHttpRequest, textStatus, errorThrown) {
                 if (XMLHttpRequest.status == "401") {

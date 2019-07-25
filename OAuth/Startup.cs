@@ -30,8 +30,8 @@ namespace OAuth
                 AllowInsecureHttp = true,
                 TokenEndpointPath = new PathString("/token"), //获取 access_token 授权服务请求地址
                 AccessTokenExpireTimeSpan = TimeSpan.FromMinutes(1), //access_token 过期时间 
-                Provider = new SimpleAuthorizationServerProvider(),//access_token 相关授权服务 
-                RefreshTokenProvider = new SimpleRefreshTokenProvider()//refresh_token 授权服务，
+                Provider = new AuthorizationServerProvider(),//access_token 相关授权服务 
+                RefreshTokenProvider = new RefreshTokenProvider()//refresh_token 授权服务，
             };
             app.UseOAuthAuthorizationServer(OAuthServerOptions);
             app.UseOAuthBearerAuthentication(new OAuthBearerAuthenticationOptions());

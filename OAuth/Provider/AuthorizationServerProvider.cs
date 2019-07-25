@@ -8,7 +8,7 @@ namespace Oauth.Filter
     /// <summary>
     /// Token验证
     /// </summary> 
-    public class SimpleAuthorizationServerProvider : OAuthAuthorizationServerProvider
+    public class AuthorizationServerProvider : OAuthAuthorizationServerProvider
     {
         public override Task ValidateClientAuthentication(OAuthValidateClientAuthenticationContext context)
         {

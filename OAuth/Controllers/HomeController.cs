@@ -1,4 +1,5 @@
-﻿using System;
+﻿using OAuth.Filter;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -13,11 +14,12 @@ namespace OAuth.Controllers
     [Authorize]
     public class HomeController : ApiController
     {
+        [MyActionFilter]
         [HttpGet]
         public string getList()
-        { 
+        {
             ClaimsIdentity oAuthIdentity = new ClaimsIdentity(HttpContext.Current.User.Identity);
-            Claim claim = oAuthIdentity.FindFirst(ClaimTypes.UserData);
+            Claim claim = oAuthIdentity.FindFirst(ClaimTypes.UserData); 
             return "UserData：" + claim.Value;
         }
 
@@ -26,6 +28,6 @@ namespace OAuth.Controllers
         public string get2()
         {
             return "测试";
-        } 
+        }
     }
 }

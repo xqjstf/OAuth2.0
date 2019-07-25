@@ -29,8 +29,8 @@
         var encrypt = new JSEncrypt();
         encrypt.setPublicKey("MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCK4n2xrbtnRyBqMJ2iiDeDRdJ/F8EVmzcjSGy/vVNfEVahl6sQOjQXZTc8AEbiZdyLnP9QwX3ZkIsEGUz1VMaPUJeH        LHQC5uVljRWR0ORt4oiU7mtN5ZsEl8gPQBzSbC7IpnXVRN1Mx7s/RlFsWZgkuZKbPjxcfgoA9zXyhmcHywIDAQAB");
         return encodeURI(encrypt.encrypt(str)).replace(/\+/g, '%2B');
+    }
 
-    }
 
 
     var api_address = "http://192.168.0.88/CqepcYX/WebAPI/token";
@@ -43,7 +43,7 @@
                 data: {
                     grant_type: "password",
                     username: $("input[name='userId']").val(),
-                   // password: Encrypt($("input[name='password']").val()),
+                    // password: Encrypt($("input[name='password']").val()),
                     password: $("input[name='password']").val(),
                     scope: "0c8034c7-242f-42de-a342-e4cccfe9037c",
                     ran: Math.random()

@@ -126,8 +126,9 @@
   <ItemGroup>
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\HomeController.cs" />
-    <Compile Include="Filter\SimpleAuthorizationServerProvider.cs" />
-    <Compile Include="Filter\SimpleRefreshTokenProvider.cs" />
+    <Compile Include="Filter\MyActionFilterAttribute.cs" />
+    <Compile Include="Provider\AuthorizationServerProvider.cs" />
+    <Compile Include="Provider\RefreshTokenProvider.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>

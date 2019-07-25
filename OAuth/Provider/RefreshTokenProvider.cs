@@ -10,7 +10,7 @@ using System.Web;
 
 namespace OAuth.Filter
 {
-    public class SimpleRefreshTokenProvider : AuthenticationTokenProvider
+    public class RefreshTokenProvider : AuthenticationTokenProvider
     {
         public static Dictionary<string, string> dicTOken = new Dictionary<string, string>();
 
@@ -31,7 +31,6 @@ namespace OAuth.Filter
                 //添加到内存中
                 dicTOken.Add(refreshTokenId, context.SerializeTicket());
             });
-
         }
 
         /// <summary>
