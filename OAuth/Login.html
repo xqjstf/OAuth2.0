@@ -11,11 +11,7 @@
     </p>
     <p>
         密&nbsp;码：<input type="text" name="password" value="000000" />
-    </p>
-    <p>
-        <img src="http://192.168.0.88/CqepcYX/WebAPI/File/GetLoginVCode?guid=0c8034c7-242f-42de-a342-e4cccfe9037c" />
-        <input type="text" name="VCode" />
-    </p>
+    </p> 
     <p>
         <input type="button" value="Login" id="btnLogin" />
         <input type="button" value="刷新ToKen" id="btnRefresh" />
@@ -34,7 +30,7 @@
 
 
     var api_address = "http://192.168.0.88/CqepcYX/WebAPI/token";
-    api_address = "http://localhost/Oauth/token?userType=T";
+    api_address = "http://localhost/Oauth2/token?userType=T";
     $(function () {
         $("#btnLogin").bind("click", function () {
             $.ajax({

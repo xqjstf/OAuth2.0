@@ -4,6 +4,7 @@ using Microsoft.Owin.Security;
 using System.Security.Claims;
 using System.Collections.Generic;
 using System;
+using System.Configuration;
 
 namespace OAuth.Filter
 {
@@ -16,13 +17,13 @@ namespace OAuth.Filter
         /// <summary>
         /// token过期时间(分钟)
         /// </summary>
-        public static int AccessTokenExpireTimeSpan
-        {
-            get
-            {
-                return Convert.ToInt32(System.Configuration.ConfigurationManager.AppSettings["AccessTokenExpireTimeSpan"]);
-            }
-        }
+        public static readonly int AccessTokenExpireTimeSpan = Convert.ToInt32(ConfigurationManager.AppSettings["AccessTokenExpireTimeSpan"]);
+
+        /// <summary>
+        /// 允许跨域的域名
+        /// </summary>
+        public static readonly string AllowOriginDomain = ConfigurationManager.AppSettings["AllowOriginDomain"] ?? "";
+
 
         public override Task ValidateClientAuthentication(OAuthValidateClientAuthenticationContext context)
         {
@@ -40,6 +41,11 @@ namespace OAuth.Filter
 
         public override Task GrantResourceOwnerCredentials(OAuthGrantResourceOwnerCredentialsContext context)
         {
+            string reqOrigin = context.Request.Headers.Get("Origin");
+            if (AllowOriginDomain == "*" || Array.IndexOf(AllowOriginDomain.Split(','), reqOrigin) > -1)
+            {
+                context.OwinContext.Response.Headers.Add("Access-Control-Allow-Origin", new string[] { reqOrigin });
+            }
 
             return Task.Factory.StartNew(() =>
             {
@@ -47,7 +53,7 @@ namespace OAuth.Filter
                 {
                     var identity = new ClaimsIdentity(context.Options.AuthenticationType);
                     identity.AddClaim(new Claim(ClaimTypes.Name, context.UserName));
-                    identity.AddClaim(new Claim(ClaimTypes.UserData, context.Password));
+                    identity.AddClaim(new Claim(ClaimTypes.UserData, string.Format("用户名:{0} 密码:{1}", context.UserName, context.Password)));
                     context.Validated(new AuthenticationTicket(identity, new AuthenticationProperties()));
                 }
                 else
@@ -63,11 +69,11 @@ namespace OAuth.Filter
         /// <param name="context"></param>
         /// <returns></returns>
         public override Task GrantRefreshToken(OAuthGrantRefreshTokenContext context)
-        { 
+        {
             return Task.Factory.StartNew(() =>
             {
                 context.Ticket.Identity.TryRemoveClaim(context.Ticket.Identity.FindFirst(ClaimTypes.UserData));
-                context.Ticket.Identity.AddClaim(new Claim(ClaimTypes.UserData, "New UserData"));
+                context.Ticket.Identity.AddClaim(new Claim(ClaimTypes.UserData, "刷新token后重新赋值的UserData"));
                 base.OnGrantRefreshToken(context);
             });
         }

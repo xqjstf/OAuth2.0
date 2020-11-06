@@ -1,5 +1,4 @@
 ﻿using Microsoft.Owin;
-using Microsoft.Owin.Cors;
 using Microsoft.Owin.Security.OAuth; 
 using OAuth.Filter;
 using Owin;
@@ -15,11 +14,8 @@ namespace OAuth
         {
             var config = new HttpConfiguration();
             WebApiConfig.Register(config);
-            app.UseCors(CorsOptions.AllowAll);//信任所有站点（跨域）
             ConfigureOAuth(app);
-            app.UseWebApi(config);  //这一行代码必须放在ConfiureOAuth(app)之后
-
-
+            app.UseWebApi(config);  //这一行代码必须放在ConfiureOAuth(app)之后 
         }
 
         public void ConfigureOAuth(IAppBuilder app)
