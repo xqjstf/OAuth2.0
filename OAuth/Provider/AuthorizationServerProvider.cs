@@ -40,15 +40,14 @@ namespace OAuth.Filter
 
 
         public override Task GrantResourceOwnerCredentials(OAuthGrantResourceOwnerCredentialsContext context)
-        {
-            string reqOrigin = context.Request.Headers.Get("Origin");
-            if (AllowOriginDomain == "*" || Array.IndexOf(AllowOriginDomain.Split(','), reqOrigin) > -1)
-            {
-                context.OwinContext.Response.Headers.Add("Access-Control-Allow-Origin", new string[] { reqOrigin });
-            }
-
+        { 
             return Task.Factory.StartNew(() =>
             {
+                string reqOrigin = context.Request.Headers.Get("Origin");
+                if (AllowOriginDomain == "*" || Array.IndexOf(AllowOriginDomain.Split(','), reqOrigin) > -1)
+                {
+                    context.OwinContext.Response.Headers.Add("Access-Control-Allow-Origin", new string[] { reqOrigin });
+                }
                 if (context.UserName == "admin" && context.Password == "000000")
                 {
                     var identity = new ClaimsIdentity(context.Options.AuthenticationType);

@@ -7,13 +7,13 @@ using System.Net.Http;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using System.Web;
-using System.Web.Http;
+using System.Web.Http; 
 
 namespace OAuth.Controllers
 {
     [Authorize]
     public class HomeController : ApiController
-    {
+    { 
         [MyActionFilter]
         [HttpGet]
         public string getList()

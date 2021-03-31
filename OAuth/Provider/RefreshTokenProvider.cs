@@ -40,13 +40,14 @@ namespace OAuth.Filter
         /// <returns></returns>
         public override Task ReceiveAsync(AuthenticationTokenReceiveContext context)
         {
-            string reqOrigin = context.Request.Headers.Get("Origin");
-            if (AuthorizationServerProvider.AllowOriginDomain == "*" || Array.IndexOf(AuthorizationServerProvider.AllowOriginDomain.Split(','), reqOrigin) > -1)
-            {
-                context.OwinContext.Response.Headers.Add("Access-Control-Allow-Origin", new string[] { reqOrigin });
-            } 
+
             return Task.Factory.StartNew(() =>
            {
+               string reqOrigin = context.Request.Headers.Get("Origin");
+               if (AuthorizationServerProvider.AllowOriginDomain == "*" || Array.IndexOf(AuthorizationServerProvider.AllowOriginDomain.Split(','), reqOrigin) > -1)
+               {
+                   context.OwinContext.Response.Headers.Add("Access-Control-Allow-Origin", new string[] { reqOrigin });
+               }
                if (dicTOken.ContainsKey(context.Token))
                {
                    context.DeserializeTicket(dicTOken[context.Token]);
