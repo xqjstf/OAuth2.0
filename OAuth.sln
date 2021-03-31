@@ -1,9 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.40629.0
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31019.35
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OAuth", "Oauth\OAuth.csproj", "{34241791-FA14-44E5-8243-52F9DAB0C892}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AuthorizationCodeMode", "AuthorizationCodeMode\AuthorizationCodeMode.csproj", "{0E9B0381-901D-4F1B-B83F-9F2693E86287}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,8 +17,15 @@ Global
 		{34241791-FA14-44E5-8243-52F9DAB0C892}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{34241791-FA14-44E5-8243-52F9DAB0C892}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{34241791-FA14-44E5-8243-52F9DAB0C892}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0E9B0381-901D-4F1B-B83F-9F2693E86287}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0E9B0381-901D-4F1B-B83F-9F2693E86287}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0E9B0381-901D-4F1B-B83F-9F2693E86287}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0E9B0381-901D-4F1B-B83F-9F2693E86287}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {25D803CE-A5C8-4150-B4BC-50CBA5D66A69}
 	EndGlobalSection
 EndGlobal
