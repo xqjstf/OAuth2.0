@@ -1,0 +1,17 @@
+状态码（HTTP Status）	错误标识（error）	错误描述（error_description）
+400	invalid_scope	请求的scope无效或超出应用许可范围
+400	invalid_request	服务尚未授权，拒绝访问!
+400	invalid_grant	授权类型无效或非法不允许等
+400	invalid_request	该传的参数不存在或为空
+400	unauthorized_client	许可授权请求:客户端未被授权使用此方法请求授权码。获取访问令牌请求:进行身份验证的客户端没有被授权使用这种授权许可类型。
+400	unsupported_grant_type	获取访问令牌请求:授权许可类型不被授权服务器支持。
+400	unsupported_response_type	许可授权请求:授权服务器不支持使用此方法获得授权码。
+400	invalid_usercredentials	用户凭据无效.
+401	invalid_token	访问令牌无效或已过期!
+401	invalid_user_token	业务访问令牌无效或已过期!
+401	invalid_client	客户端未注册|"客户端状态无效"|"客户端密钥无效"
+403	insufficient_api	服务等级超出应用访问许可!
+403	insufficient_scope	服务所属范围未经授权允许!
+403	exceed_access_rate	超过服务访问限制
+404	openapi_not_found	The openapi[ + api_url + "] is unregistered."
+500	server_error	许可授权请求:授权服务器遇到意外情况导致其无法执行该请求。

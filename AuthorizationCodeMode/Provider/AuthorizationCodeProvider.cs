@@ -10,38 +10,37 @@ namespace AuthorizationCodeMode.Provider
     /// <summary>
     /// 授权码提供类
     /// </summary>
-    public class AuthorizationCodeProvider : IAuthenticationTokenProvider
+    public class AuthorizationCodeProvider : AuthenticationTokenProvider
     {
         private static Dictionary<string, string> codes = new Dictionary<string, string>();
 
-        public void Create(AuthenticationTokenCreateContext context)
+        public override Task CreateAsync(AuthenticationTokenCreateContext context)
         {
-            string new_code = Guid.NewGuid().ToString("n");
-            context.SetToken(new_code);
-            codes.Add(new_code, context.SerializeTicket());
-        }
-
-        public Task CreateAsync(AuthenticationTokenCreateContext context)
-        {
-            Create(context);
-            return Task.FromResult<object>(null);
-        }
-
-        public void Receive(AuthenticationTokenReceiveContext context)
-        {
-            string code = context.Token;
-            if (codes.ContainsKey(code))
+            return Task.Factory.StartNew(() =>
             {
-                string value = codes[code];
-                codes.Remove(code);
-                context.DeserializeTicket(value);
-            }
+                string new_code = Guid.NewGuid().ToString("n");
+                context.SetToken(new_code);
+                codes.Add(new_code, context.SerializeTicket());
+            });
         }
 
-        public Task ReceiveAsync(AuthenticationTokenReceiveContext context)
+
+        public override Task ReceiveAsync(AuthenticationTokenReceiveContext context)
         {
-            Receive(context);
-            return Task.FromResult<object>(null);
+            return Task.Factory.StartNew(() =>
+           {
+               string code = context.Token;
+               if (codes.ContainsKey(code))
+               {
+                   string value = codes[code];
+                   codes.Remove(code);
+                   context.DeserializeTicket(value);
+               }
+               else
+               { 
+                   context.SetCustomError(1, "code已经失效");
+               }
+           });
         }
     }
 }
