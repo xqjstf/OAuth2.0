@@ -19,7 +19,6 @@ namespace AuthorizationCodeMode.Provider
             {
                 if (string.IsNullOrEmpty(context.RedirectUri))
                 {
-                    context.Rejected();
                     context.SetCustomError(1, "地址不能为空");
                 }
                 else
@@ -30,22 +29,12 @@ namespace AuthorizationCodeMode.Provider
         }
 
 
-        public override Task ValidateAuthorizeRequest(OAuthValidateAuthorizeRequestContext context)
-        {
-            return Task.Factory.StartNew(() =>
-            {
-                if (context.AuthorizeRequest.ClientId.StartsWith("AAA"))
-                {
-                    context.Validated();
-                }
-                else
-                {
-                    context.Rejected();
-                    context.SetCustomError(1, "无效请求");
-                }
-            });
-        }
 
+        /// <summary>
+        /// 完成认证，跳转到重定向URI
+        /// </summary>
+        /// <param name="context"></param>
+        /// <returns></returns>
         public override async Task AuthorizeEndpoint(OAuthAuthorizeEndpointContext context)
         {
             var redirectUri = context.Request.Query["redirect_uri"];
@@ -75,23 +64,6 @@ namespace AuthorizationCodeMode.Provider
         }
 
 
-        public override Task ValidateClientAuthentication(OAuthValidateClientAuthenticationContext context)
-        {
-            return Task.Factory.StartNew(() =>
-            {
-                context.TryGetFormCredentials(out string clientId, out string clientSecret);
-                if (clientId.StartsWith("AAA"))
-                {
-                    context.Validated();
-                }
-                else
-                {
-                    context.Rejected();
-                    context.SetCustomError(0, "未授权的客户端");
-                }
-            });
-        }
-
         public override Task ValidateTokenRequest(OAuthValidateTokenRequestContext context)
         {
             return Task.Factory.StartNew(() =>
@@ -106,8 +78,50 @@ namespace AuthorizationCodeMode.Provider
                 }
                 else
                 {
-                    context.Rejected();
-                    context.SetCustomError(1, "无效密钥获取请求");
+                    context.SetCustomError(1, "请求有误");
+                }
+            });
+        }
+        public override Task ValidateAuthorizeRequest(OAuthValidateAuthorizeRequestContext context)
+        {
+            //获取code的时候会调用
+            return Task.Factory.StartNew(() =>
+            {
+                if (string.IsNullOrEmpty(context.ClientContext.ClientId))
+                {
+                    context.SetCustomError(0, "客户端编号参数不能为空");
+                }
+                else if (context.ClientContext.ClientId.StartsWith("AAA") == false)
+                {
+                    context.SetCustomError(0, "客户端未被授权");
+                }
+                else
+                {
+                    context.Validated();
+                }
+            });
+        }
+
+        public override Task ValidateClientAuthentication(OAuthValidateClientAuthenticationContext context)
+        {
+            //ValidateAuthorizeRequest 验证失败会调用
+            return Task.Factory.StartNew(() =>
+            {
+                if (context.TryGetFormCredentials(out string clientId, out string clientSecret))
+                {
+                    if (clientId.StartsWith("AAA") == false)
+                    {
+                        context.SetCustomError(0, "客户端未授权");
+                    }
+                    else
+                    {
+                        context.Validated();
+                    }
+                }
+                else
+                {
+                    context.SetCustomError(1, "客户端相关参数有误");
+                    return;
                 }
             });
         }

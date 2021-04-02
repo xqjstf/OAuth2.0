@@ -19,28 +19,31 @@ namespace AuthorizationCodeMode.Provider
     {
         public static void SetCustomError(this OAuthValidateClientAuthenticationContext context, int code, string msg)
         {
-            ResponseWrite(context.Response, ResponseMessage.GetJson(code, msg));
-
+            context.Rejected();
+            ResponseWrite(context.Response, ResponseMessage.GetJson(code, msg)); 
         }
         public static void SetCustomError(this AuthenticationTokenReceiveContext context, int code, string msg)
-        {
+        { 
             ResponseWrite(context.Response, ResponseMessage.GetJson(code, msg));
         }
 
         public static void SetCustomError(this OAuthValidateClientRedirectUriContext context, int code, string msg)
         {
+            context.Rejected();
             ResponseWrite(context.Response, ResponseMessage.GetJson(code, msg));
         }
         public static void SetCustomError(this OAuthValidateTokenRequestContext context, int code, string msg)
         {
+            context.Rejected();
             ResponseWrite(context.Response, ResponseMessage.GetJson(code, msg));
         }
         public static void SetCustomError(this OAuthValidateAuthorizeRequestContext context, int code, string msg)
         {
+            context.Rejected();
             ResponseWrite(context.Response, ResponseMessage.GetJson(code, msg));
         }
 
-
+        
         private static readonly MemoryStream bodyStream = new MemoryStream();
         public static void ResponseWrite(IOwinResponse response, string json)
         {

@@ -29,6 +29,10 @@ namespace AuthorizationCodeMode.Provider
                 tokens.Remove(token);
                 context.DeserializeTicket(value);
             }
+            else
+            {
+                context.SetCustomError(1, "刷新票据已经失效");
+            }
         }
     }
 }
