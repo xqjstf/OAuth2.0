@@ -17,39 +17,39 @@ namespace AuthorizationCodeMode.Provider
 {
     public static class ContextHelper
     {
-        public static void SetCustomError(this OAuthValidateClientAuthenticationContext context, int code, string msg)
+        public static void SetCustomError(this OAuthValidateClientAuthenticationContext context, string msg)
         {
             context.Rejected();
-            ResponseWrite(context.Response, ResponseMessage.GetJson(code, msg)); 
+            ResponseWrite(context.Response, msg);
         }
-        public static void SetCustomError(this AuthenticationTokenReceiveContext context, int code, string msg)
-        { 
-            ResponseWrite(context.Response, ResponseMessage.GetJson(code, msg));
+        public static void SetCustomError(this AuthenticationTokenReceiveContext context, string msg)
+        {
+            ResponseWrite(context.Response, msg);
         }
 
-        public static void SetCustomError(this OAuthValidateClientRedirectUriContext context, int code, string msg)
+        public static void SetCustomError(this OAuthValidateClientRedirectUriContext context, string msg)
         {
             context.Rejected();
-            ResponseWrite(context.Response, ResponseMessage.GetJson(code, msg));
+            ResponseWrite(context.Response, msg);
         }
-        public static void SetCustomError(this OAuthValidateTokenRequestContext context, int code, string msg)
+        public static void SetCustomError(this OAuthValidateTokenRequestContext context, string msg)
         {
             context.Rejected();
-            ResponseWrite(context.Response, ResponseMessage.GetJson(code, msg));
+            ResponseWrite(context.Response, msg);
         }
-        public static void SetCustomError(this OAuthValidateAuthorizeRequestContext context, int code, string msg)
+        public static void SetCustomError(this OAuthValidateAuthorizeRequestContext context, string msg)
         {
             context.Rejected();
-            ResponseWrite(context.Response, ResponseMessage.GetJson(code, msg));
+            ResponseWrite(context.Response, msg);
         }
 
-        
+
         private static readonly MemoryStream bodyStream = new MemoryStream();
-        public static void ResponseWrite(IOwinResponse response, string json)
+        public static void ResponseWrite(IOwinResponse response, string msg)
         {
             response.StatusCode = 200;
             response.ContentType = "application/json";
-            response.Write(json);
+            response.Write(ResponseMessage.GetJson(1, msg));
             response.Body = bodyStream;
         }
     }

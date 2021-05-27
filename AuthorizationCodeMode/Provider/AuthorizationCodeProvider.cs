@@ -37,8 +37,8 @@ namespace AuthorizationCodeMode.Provider
                    context.DeserializeTicket(value);
                }
                else
-               { 
-                   context.SetCustomError(1, "code已经失效");
+               {
+                   context.SetCustomError("code已经失效");
                }
            });
         }

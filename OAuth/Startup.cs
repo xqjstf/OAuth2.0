@@ -26,7 +26,7 @@ namespace OAuth
                 TokenEndpointPath = new PathString("/token"), //获取 access_token 授权服务请求地址
                 AccessTokenExpireTimeSpan = TimeSpan.FromMinutes(AuthorizationServerProvider.AccessTokenExpireTimeSpan), //access_token 过期时间 
                 Provider = new AuthorizationServerProvider(),//access_token 相关授权服务 
-                RefreshTokenProvider = new RefreshTokenProvider()//refresh_token 授权服务，
+                RefreshTokenProvider = new RefreshTokenProvider(),//refresh_token 授权服务， 
             };
             app.UseOAuthAuthorizationServer(OAuthServerOptions);
             app.UseOAuthBearerAuthentication(new OAuthBearerAuthenticationOptions());

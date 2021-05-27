@@ -31,7 +31,7 @@ namespace AuthorizationCodeMode.Provider
             }
             else
             {
-                context.SetCustomError(1, "刷新票据已经失效");
+                context.SetCustomError("刷新票据已经失效");
             }
         }
     }

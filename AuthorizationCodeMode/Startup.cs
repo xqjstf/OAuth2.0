@@ -43,7 +43,8 @@ namespace AuthorizationCodeMode
                 AccessTokenExpireTimeSpan = TimeSpan.FromMinutes(30),//AccessToken在30分钟后过期
                 Provider = new AuthorizationServerProvider(),//AccessToken的提供类
                 AuthorizationCodeProvider = new AuthorizationCodeProvider(),//授权码的提供类      
-                RefreshTokenProvider = new RefreshTokenProvider()//RefreshToken的提供类          
+                RefreshTokenProvider = new RefreshTokenProvider(),//RefreshToken的提供类   
+                ApplicationCanDisplayErrors = true
             };
 
             app.UseOAuthAuthorizationServer(OAuthServerOptions);

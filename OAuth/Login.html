@@ -11,7 +11,7 @@
     </p>
     <p>
         密&nbsp;码：<input type="text" name="password" value="000000" />
-    </p> 
+    </p>
     <p>
         <input type="button" value="Login" id="btnLogin" />
         <input type="button" value="刷新ToKen" id="btnRefresh" />
@@ -29,21 +29,16 @@
 
 
 
-    var api_address = "http://192.168.0.88/CqepcYX/WebAPI/token";
-    api_address = "http://localhost/Oauth2/token?userType=T";
-    api_address = "http://www.test.lk/BcsxuXG/WebAPI/api/token?userType=T"; 
+    var api_address = "http://localhost/Oauth2/token";
     $(function () {
         $("#btnLogin").bind("click", function () {
             $.ajax({
                 type: "POST",
-                url: api_address + "?LoginVCode=" + $("input[name='VCode']").val(),
+                url: api_address,
                 data: {
                     grant_type: "password",
                     username: $("input[name='userId']").val(),
-                    // password: Encrypt($("input[name='password']").val()),
                     password: $("input[name='password']").val(),
-                    scope: "0c8034c7-242f-42de-a342-e4cccfe9037c",
-                    ran: Math.random()
                 },
                 dataType: "json",
                 success: function (result) {
